@@ -1,36 +1,39 @@
-"use client";
-import { CldUploadButton } from "next-cloudinary";
-import { uploadResult } from "../page";
-import { Button } from "@/components/ui/button";
+import { CldImage } from "next-cloudinary";
+import UploadButton from "./upload-button";
+import cloudinary from "cloudinary";
+import { ClodinaryImage } from "./clodinary-image";
 
-export default function GalleryPage() {
+type SearchResult = {
+  public_id: string;
+};
+
+export default async function GalleryPage() {
+  const result = (await cloudinary.v2.search
+    .expression("resource_type:image")
+    .sort_by("created_at", "desc")
+    .max_results(10)
+    .execute()) as { resources: SearchResult[] };
+
   return (
     <section>
-      <div className="flex justify-between">
-        <h1 className="text-4xl font-bold">Gallery</h1>
-        <Button asChild>
-          <div className="flex gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              className=" h-4 w-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
+      <div className="flex flex-col gap-8">
+        <div className="flex justify-between">
+          <h1 className="text-4xl font-bold">Gallery</h1>
+          <UploadButton />
+        </div>
+        <div className="grid grid-cols-4 gap-4 ">
+          {result.resources.map((res) => {
+            return (
+              <ClodinaryImage
+                key={res.public_id}
+                src={res.public_id}
+                alt="an image of something"
+                width="400"
+                height="400"
               />
-            </svg>
-
-            <CldUploadButton
-              uploadPreset="gwveobgu"
-              onUpload={(result: uploadResult) => {}}
-            />
-          </div>
-        </Button>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
