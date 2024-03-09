@@ -1,7 +1,6 @@
-import { CldImage } from "next-cloudinary";
 import UploadButton from "./upload-button";
 import cloudinary from "cloudinary";
-import { ClodinaryImage } from "./clodinary-image";
+import GalleryGrid from "./gallery-grid";
 
 export type SearchResult = {
   public_id: string;
@@ -23,20 +22,8 @@ export default async function GalleryPage() {
           <h1 className="text-4xl font-bold">Gallery</h1>
           <UploadButton />
         </div>
-        <div className="grid grid-cols-4 gap-4 ">
-          {result.resources.map((res) => {
-            return (
-              <ClodinaryImage
-                path="/gallery"
-                key={res.public_id}
-                imageData={res}
-                alt="an image of something"
-                width="400"
-                height="400"
-              />
-            );
-          })}
-        </div>
+
+        <GalleryGrid images={result.resources} />
       </div>
     </section>
   );

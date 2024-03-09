@@ -1,6 +1,8 @@
 import cloudinary from "cloudinary";
 import { ClodinaryImage } from "../gallery/clodinary-image";
 import { SearchResult } from "../gallery/page";
+import FavoritesList from "./favorites-list";
+import { ForceRefresh } from "@/components/force-refresh";
 
 export default async function FavoritePage() {
   const result = (await cloudinary.v2.search
@@ -12,24 +14,13 @@ export default async function FavoritePage() {
 
   return (
     <section>
+      <ForceRefresh />
       <div className="flex flex-col gap-8">
         <div className="flex justify-between">
           <h1 className="text-4xl font-bold">Favorite Image</h1>
         </div>
-        <div className="grid grid-cols-4 gap-4 ">
-          {result.resources.map((res) => {
-            return (
-              <ClodinaryImage
-                path="/favorites"
-                key={res.public_id}
-                imageData={res}
-                alt="an image of something"
-                width="400"
-                height="400"
-              />
-            );
-          })}
-        </div>
+
+        <FavoritesList initialResources={result.resources} />
       </div>
     </section>
   );
