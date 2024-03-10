@@ -2,10 +2,11 @@
 
 import Heart from "@/components/icons/Heart";
 import { CldImage, CldImageProps } from "next-cloudinary";
-import { setAsFavoriteAction } from "./actions";
-import { ComponentProps, useState, useTransition } from "react";
-import { SearchResult } from "./page";
+import { setAsFavoriteAction } from "../app/gallery/actions";
+import { useState, useTransition } from "react";
+import { SearchResult } from "../app/gallery/page";
 import FullHeart from "@/components/icons/full-heart";
+import { ImageMenu } from "@/components/image-menu";
 
 export function ClodinaryImage(
   props: {
@@ -47,6 +48,8 @@ export function ClodinaryImage(
           className="absolute top-2 left-2 hover:text-red-500 cursor-pointer"
         />
       )}
+
+      <ImageMenu image={imageData} />
     </div>
   );
 }

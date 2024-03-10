@@ -1,12 +1,20 @@
 import cloudinary from "cloudinary";
-import { ClodinaryImage } from "../../components/clodinary-image";
-import { SearchResult } from "../gallery/page";
-import FavoritesList from "./favorites-list";
+import AlbumGrid from "./album-grid";
 import { ForceRefresh } from "@/components/force-refresh";
 
-export default async function FavoritePage() {
+export type SearchResult = {
+  public_id: string;
+  tags: string[];
+};
+
+const excludedFolders = ["products", "avatars"];
+export default async function GalleryPage({
+  params: { albumName },
+}: {
+  params: { albumName: string };
+}) {
   const result = (await cloudinary.v2.search
-    .expression("resource_type:image AND tags=favorite")
+    .expression(`resource_type:image AND folder=${albumName}`)
     .sort_by("created_at", "desc")
     .with_field("tags")
     .max_results(20)
@@ -17,10 +25,10 @@ export default async function FavoritePage() {
       <ForceRefresh />
       <div className="flex flex-col gap-8">
         <div className="flex justify-between">
-          <h1 className="text-4xl font-bold">Favorite Image</h1>
+          <h1 className="text-4xl font-bold">Album {albumName}</h1>
         </div>
 
-        <FavoritesList initialResources={result.resources} />
+        <AlbumGrid images={result.resources} />
       </div>
     </section>
   );

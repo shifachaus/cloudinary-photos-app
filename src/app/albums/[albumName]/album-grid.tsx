@@ -1,10 +1,10 @@
 "use client";
 
-import { ClodinaryImage } from "../../components/clodinary-image";
 import ImageGrid from "@/components/image-grid";
 import { SearchResult } from "./page";
+import { ClodinaryImage } from "@/components/clodinary-image";
 
-export default function GalleryGrid({ images }: { images: SearchResult[] }) {
+export default function AlbumGrid({ images }: { images: SearchResult[] }) {
   return (
     <ImageGrid
       images={images}
