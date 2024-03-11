@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { FolderPlus } from "lucide-react";
+import { FolderPlus, Pencil } from "lucide-react";
 import { AddToAlbumDialog } from "./add-to-album-dialog";
 import { useState } from "react";
 
@@ -24,6 +24,15 @@ export function ImageMenu({ image }: { image: SearchResult }) {
         <DropdownMenuContent className="w-40">
           <DropdownMenuItem asChild>
             <AddToAlbumDialog image={image} onClose={() => setOpen(false)} />
+          </DropdownMenuItem>
+
+          <DropdownMenuItem asChild>
+            <Link
+              href={`/edit?publicId=${encodeURIComponent(image.public_id)}`}
+            >
+              <Pencil className="mr-2 w-4 h-4" />
+              Edit
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
